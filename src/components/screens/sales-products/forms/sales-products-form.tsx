@@ -188,7 +188,7 @@ const SalesProductsForm: FC = () => {
 			}
 		)
 	}
-
+	
 	return (
 		<FormDrawer form={form} width={1000} isLoading={addLoading}>
 			<Form
@@ -393,6 +393,7 @@ const SalesProductsForm: FC = () => {
 						</Text>
 					</div>
 				)}
+			
 			</Form>
 		</FormDrawer>
 	)

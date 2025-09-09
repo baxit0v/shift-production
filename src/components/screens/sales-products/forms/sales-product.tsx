@@ -41,6 +41,7 @@ interface ProductInfo {
 	hasWidth: boolean
 	width: number
 	unitOfMeasurement: string
+	measurementUnitId: number
 	shouldShowPrintType: boolean
 	maxValue: number
 }
@@ -78,7 +79,8 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 			return {
 				hasWidth: false,
 				width: 0,
-				unitOfMeasurement: "м",
+				unitOfMeasurement: "-",
+				measurementUnitId: 1,
 				shouldShowPrintType: true,
 				sellPrice: 0,
 				maxValue: 0
@@ -92,6 +94,9 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 			? product.remainder.meter_square
 			: product.remainder.meter
 
+		const unitOfMeasurement = product.measurement_unit.name
+		const measurementUnitId = product.measurement_unit.id
+
 		const shouldShowPrintType = !(
 			product.name.id === 2 || product.name.id === 4
 		)
@@ -101,7 +106,8 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 			hasWidth,
 			width,
 			maxValue: maxValue ?? 0,
-			unitOfMeasurement: hasWidth ? "м²" : "м",
+			unitOfMeasurement,
+			measurementUnitId,
 			shouldShowPrintType
 		}
 	}
@@ -207,6 +213,24 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 			form.setFieldValue(["products", index, "material_cost"], materialCost)
 		}
 	}
+	const handleChangeQuantity = (index: number, productId: number) => {
+		const product = getProductInfo(productId)
+		const quantity =
+			form.getFieldValue(["products", index, "length"]) ??
+			form.getFieldValue(["products", index, "pieces"]) ??
+			0
+
+		if (!quantity) {
+			form.setFieldValue(["products", index, "material_cost"], 0)
+			return
+		}
+
+		// если метры или штуки → умножаем напрямую
+		const materialCost = product.sellPrice * quantity
+		form.setFieldValue(["products", index, "material_cost"], materialCost)
+	}
+
+
 	const handleChangeLength = (index: number, productId: number) => {
 		const length = form.getFieldValue(["products", index, "length"]) ?? 0
 		const product = getProductInfo(productId)
@@ -326,16 +350,35 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 											</Form.Item>
 
 											{/* Длина */}
-											<Form.Item
-												{...restField}
-												label={`${t("length")}(м)`}
-												name={[name, "length"]}>
-												<InputPrice
-													onChange={() => handleChangeLength(name, productId)}
-													placeholder="Длина в метрах"
-													min={0}
-												/>
-											</Form.Item>
+											{productInfo.measurementUnitId === 3 ? (
+												<Form.Item
+													{...restField}
+													label={"Штук материал"}
+													name={[name, "pieces"]}
+													rules={[{ required: true, message: t("Введите количество штук") }]}
+												>
+													<InputPrice
+														min={0}
+														placeholder={t("Введите количество штук")}
+														onChange={() => handleChangeQuantity(name, productId)}
+													/>
+												</Form.Item>
+
+											) : (
+												<Form.Item
+													{...restField}
+													label={`${t("length")}(м)`}
+													name={[name, "length"]}
+												>
+													<InputPrice
+														onChange={() => handleChangeQuantity(name, productId)}
+														placeholder="Длина в метрах"
+														min={0}
+													/>
+												</Form.Item>
+
+											)}
+
 
 											{/* Площадь печати (только для продуктов с шириной) */}
 											{productInfo.hasWidth && (
@@ -442,24 +485,41 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 
 											<Col span={3}>
 												<Text strong style={{ display: "block" }}>
-													{t("pricePerMeter")}:
+													{productInfo.measurementUnitId === 3
+														? "1 шт"
+														: productInfo.measurementUnitId === 2
+															? t("pricePerMeter")
+															: t("pricePerMeter")}
+													:
 												</Text>
 												<Text>{formatPriceUZS(productInfo.sellPrice)}</Text>
 											</Col>
 
+
 											<Col span={3}>
 												<Text strong style={{ display: "block" }}>
-													{productInfo.hasWidth ? t("area") : t("length")}:
+													{productInfo.hasWidth
+														? t("area")
+														: productInfo.measurementUnitId === 3
+															? "Штук"
+															: t("length")}
+													:
 												</Text>
+
 												<Text strong style={{ display: "block" }}>
-													{area.toFixed(2)} {productInfo.unitOfMeasurement}
+													{productInfo.measurementUnitId === 3
+														? (currentProduct?.pieces || 0) // показываем количество штук
+														: area.toFixed(2)}{" "}
+													{productInfo.unitOfMeasurement}
 												</Text>
-												{area > productInfo.maxValue && (
+
+												{productInfo.hasWidth && area > productInfo.maxValue && (
 													<Text strong style={{ color: "red" }}>
 														{t("maxValue")} {productInfo.maxValue}
 													</Text>
 												)}
 											</Col>
+
 
 											<Col span={3}>
 												<Text strong style={{ display: "block" }}>

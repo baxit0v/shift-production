@@ -41,6 +41,7 @@ type SalesProductForm = {
 		print_cost?: number
 		material_cost?: number
 		length?: number
+		pieces?: number
 		print_meter_square?: number
 		full_cost?: number
 	}[]

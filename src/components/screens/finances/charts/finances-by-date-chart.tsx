@@ -54,7 +54,7 @@ const FinancesByDateChart: FC<FinancesByDateChartProps> = ({
 	})
 	return (
 		<Card
-			bordered={false}
+			variant="borderless"
 			title={title}
 			extra={
 				<Space>

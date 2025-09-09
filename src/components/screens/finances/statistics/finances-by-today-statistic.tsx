@@ -87,7 +87,7 @@ const FinancesByTodayStatistic: FC<FinancesByTodayStatisticProps> = ({
 		<Row gutter={20} style={{ rowGap: 20 }}>
 			{data.map(({ Icon, value, title }, index) => (
 				<Col xs={24} sm={12} key={index}>
-					<Card bordered={false}>
+					<Card variant="borderless">
 						<Flex justify={"space-between"}>
 							<Space direction={"vertical"}>
 								<Typography.Title level={4}>{value}</Typography.Title>

@@ -48,7 +48,7 @@ const LoginForm: FC = () => {
 	return (
 		<Flex vertical={true} align={"center"} style={{ padding: 24 }}>
 			<Card
-				bordered={false}
+				variant="borderless"
 				style={{
 					width: "100%",
 					maxWidth: 550

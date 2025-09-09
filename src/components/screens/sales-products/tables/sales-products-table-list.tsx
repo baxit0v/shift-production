@@ -44,7 +44,12 @@ const columns: ColumnsType<SalesProduct["products"]> = [
 		key: "meter",
 		render: formatEmpty
 	},
-
+	{
+		title: "Штук",
+		dataIndex: "pieces",
+		key: "pieces",
+		render: formatEmpty
+	},
 	{
 		title: "Польная стоимость",
 		dataIndex: "amount",
