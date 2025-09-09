@@ -46,7 +46,6 @@ const SalesProductsForm: FC = () => {
 	// Watch form values for calculations
 	const watchedValues = Form.useWatch([], form)
 	const productsList = watchedValues?.products || []
-	console.log(products)
 
 	// Define print type prices
 	const printTypePrices: Record<number, number> = {

@@ -231,7 +231,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 	}
 
 
-	const handleChangeLength = (index: number, productId: number) => {
+	/* const handleChangeLength = (index: number, productId: number) => {
 		const length = form.getFieldValue(["products", index, "length"]) ?? 0
 		const product = getProductInfo(productId)
 		const area = calculateArea(productId, length)
@@ -242,7 +242,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 			const materialCost = product.sellPrice * area
 			form.setFieldValue(["products", index, "material_cost"], materialCost)
 		}
-	}
+	} */
 
 	const onAddGarfon = (index: number, productId: number) => {
 		const length = form.getFieldValue(["products", index, "length"]) ?? 0
