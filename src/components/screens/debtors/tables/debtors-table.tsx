@@ -24,7 +24,7 @@ const DebtorsTable: FC = () => {
 		<>
 			<Table<Debtor>
 				rowKey={(record) => record.id}
-				title={t("menu.report_suppliers"	)}
+				title={t("menu.report_debtors")}
 				columns={columns}
 				loading={isLoading || isFetching}
 				dataSource={debtors?.data}

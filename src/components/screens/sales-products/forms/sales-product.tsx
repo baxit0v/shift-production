@@ -3,15 +3,17 @@ import {
 	Button,
 	Card,
 	Col,
+	DatePicker,
 	Form,
 	Input,
+	InputNumber,
 	Row,
 	Select,
 	Space,
 	Typography
 } from "antd"
 import { FormProps } from "antd/lib"
-import { type FC } from "react"
+import { useEffect, type FC } from "react"
 import { PatternFormat } from "react-number-format"
 import { FORM_DEFAULT } from "src/constants/form.constants"
 import {
@@ -59,6 +61,16 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 
 	const watchedValues = Form.useWatch([], form)
 	const productsList = watchedValues?.products || []
+	const paymentType = Form.useWatch<number | undefined>("payment_type_id", form)
+
+	useEffect(() => {
+		if (paymentType !== 2 && paymentType !== 4) {
+		  form.setFieldsValue({ due_date: undefined, paid_amount: undefined })
+		}
+		if (paymentType === 2) {
+		  form.setFieldsValue({ paid_amount: undefined })
+		}
+	  }, [paymentType, form])
 
 	// Обработчик выбора клиента
 	const handleClientSelect = (selectedName: string) => {
@@ -112,38 +124,38 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 		}
 	}
 
-	const onFinish: FormProps<SalesProductForm>["onFinish"] = async (values) => {
-		// Обрабатываем продукты перед отправкой
+	const onFinish: FormProps<any>["onFinish"] = async (values) => {
 		const processedProducts =
-			values.products?.map((product) => {
-				const productInfo = getProductInfo(product.product_id)
-
-				// Если товар не имеет ширины, удаляем поля связанные с печатью
-				if (!productInfo.hasWidth) {
-					const {
-						print_type_id,
-						print_meter_square,
-						print_cost,
-						...productWithoutPrint
-					} = product
-					return productWithoutPrint
-				}
-
-				return product
-			}) || []
-
-		const processedValues = {
-			...values,
-			phone: formatPhoneReverse(values.phone),
-			products: processedProducts
-		}
-
-		await addSalesProduct(processedValues, {
-			onSuccess: () => {
-				form.resetFields()
+		  values.products?.map((product: { [x: string]: any; product_id?: any; print_type_id?: any; print_meter_square?: any; print_cost?: any }) => {
+			const productInfo = getProductInfo(product.product_id)
+			if (!productInfo.hasWidth) {
+			  const { print_type_id, print_meter_square, print_cost, ...rest } = product
+			  return rest
 			}
-		})
-	}
+			return product
+		  }) || []
+	  
+		// преобразование даты в YYYY-MM-DD
+		const formatDate = (dateObj: any) => {
+		  if (!dateObj) return ""
+		  const d = dateObj.toDate() // Dayjs -> Date
+		  const year = d.getFullYear()
+		  const month = String(d.getMonth() + 1).padStart(2, "0")
+		  const day = String(d.getDate()).padStart(2, "0")
+		  return `${year}-${month}-${day}`
+		}
+	  
+		const processedValues: SalesProductForm = {
+		  ...values,
+		  phone: formatPhoneReverse(values.phone),
+		  due_date: formatDate(values.due_date),
+		  paid_amount: values.paid_amount ?? 0,
+		  products: processedProducts
+		}
+	  
+		await addSalesProduct(processedValues, { onSuccess: () => form.resetFields() })
+	  }
+	  
 	const calculateArea = (productId: number, length?: number) => {
 		const productInfo = getProductInfo(productId)
 
@@ -359,7 +371,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 												>
 													<InputPrice
 														min={0}
-														placeholder={t("Введите количество штук")}
+														placeholder={"Введите количество штук"}
 														onChange={() => handleChangeQuantity(name, productId)}
 													/>
 												</Form.Item>
@@ -553,6 +565,31 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 						</>
 					)}
 				</Form.List>
+				{(paymentType === 2 || paymentType === 4) && (
+					<Row gutter={8}>
+						<Col span={12}>
+							<Form.Item
+								name="due_date"
+								label={t("date")}
+								rules={[{ required: true, message: "Выберите дату" }]}
+							>
+								<DatePicker style={{ width: "100%" }} />
+							</Form.Item>
+						</Col>
+						{paymentType === 4 && (
+							<Col span={12}>
+								<Form.Item
+									name="paid_amount"
+									label={t("paid_amount")}
+									rules={[{ required: true, message: "Введите сумму оплаты" }]}
+								>
+									<InputNumber min={0} style={{ width: "100%" }} />
+								</Form.Item>
+							</Col>
+						)}
+					</Row>
+				)}
+
 
 				{/* Кнопка сохранения */}
 				<Form.Item label={null}>

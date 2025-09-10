@@ -35,6 +35,8 @@ type SalesProductForm = {
 	payment_type_id: number
 	full_name: string
 	phone: string
+	paid_amount: number
+	due_date: string
 	products: {
 		product_id: number
 		print_type_id?: number

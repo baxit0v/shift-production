@@ -66,6 +66,7 @@ const SalesProductsTableList: FC<SalesProductsTableListProps> = ({
 				columns={columns}
 				dataSource={data}
 				pagination={false}
+				rowKey="id"
 			/>
 		</>
 	)
