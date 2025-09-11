@@ -51,7 +51,7 @@ const columns: ColumnsType<SalesProduct["products"]> = [
 		render: formatEmpty
 	},
 	{
-		title: "Польная стоимость",
+		title: "Полная стоимость",
 		dataIndex: "amount",
 		key: "amount",
 		render: formatInputPrice

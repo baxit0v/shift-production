@@ -24,7 +24,7 @@ const useProductItems = (data?: ProductItem) => {
 		},
 		{
 			key: "remainder_pieces",
-			label: "Осталось штук",
+			label: t("remainder_pieces"),
 			children: formatEmpty(data?.remainder.pieces)
 		},
 		{
@@ -54,7 +54,7 @@ const useProductItems = (data?: ProductItem) => {
 		},
 		{
 			key: "sell_price",
-			label: "Сотув нархи",
+			label: t("sell_price"),
 			children: (
 				<UpdatePriceForm productId={data?.id} initialPrice={data?.sell_price} />
 			)

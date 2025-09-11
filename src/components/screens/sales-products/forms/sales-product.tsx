@@ -6,14 +6,13 @@ import {
 	DatePicker,
 	Form,
 	Input,
-	InputNumber,
 	Row,
 	Select,
 	Space,
 	Typography
 } from "antd"
 import { FormProps } from "antd/lib"
-import { useEffect, type FC } from "react"
+import { useEffect, useMemo, type FC } from "react"
 import { PatternFormat } from "react-number-format"
 import { FORM_DEFAULT } from "src/constants/form.constants"
 import {
@@ -25,7 +24,6 @@ import { formatPhoneReverse, formatPriceUZS } from "src/utils/formatter.utils"
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons"
 import { useTranslation } from "react-i18next"
 import { InputPrice } from "src/components/ui"
-import { SELECT_PLACEHOLDER } from "src/constants/form.constants"
 import { useGetProductsQuery } from "src/services/products"
 import { useGetClientsQuery } from "src/services/shared/clients"
 import { useGetPrintTypesQuery } from "src/services/shared/print-types"
@@ -65,12 +63,12 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 
 	useEffect(() => {
 		if (paymentType !== 2 && paymentType !== 4) {
-		  form.setFieldsValue({ due_date: undefined, paid_amount: undefined })
+			form.setFieldsValue({ due_date: undefined, paid_amount: undefined })
 		}
 		if (paymentType === 2) {
-		  form.setFieldsValue({ paid_amount: undefined })
+			form.setFieldsValue({ paid_amount: undefined })
 		}
-	  }, [paymentType, form])
+	}, [paymentType, form])
 
 	// Обработчик выбора клиента
 	const handleClientSelect = (selectedName: string) => {
@@ -126,36 +124,36 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 
 	const onFinish: FormProps<any>["onFinish"] = async (values) => {
 		const processedProducts =
-		  values.products?.map((product: { [x: string]: any; product_id?: any; print_type_id?: any; print_meter_square?: any; print_cost?: any }) => {
-			const productInfo = getProductInfo(product.product_id)
-			if (!productInfo.hasWidth) {
-			  const { print_type_id, print_meter_square, print_cost, ...rest } = product
-			  return rest
-			}
-			return product
-		  }) || []
-	  
+			values.products?.map((product: { [x: string]: any; product_id?: any; print_type_id?: any; print_meter_square?: any; print_cost?: any }) => {
+				const productInfo = getProductInfo(product.product_id)
+				if (!productInfo.hasWidth) {
+					const { print_type_id, print_meter_square, print_cost, ...rest } = product
+					return rest
+				}
+				return product
+			}) || []
+
 		// преобразование даты в YYYY-MM-DD
 		const formatDate = (dateObj: any) => {
-		  if (!dateObj) return ""
-		  const d = dateObj.toDate() // Dayjs -> Date
-		  const year = d.getFullYear()
-		  const month = String(d.getMonth() + 1).padStart(2, "0")
-		  const day = String(d.getDate()).padStart(2, "0")
-		  return `${year}-${month}-${day}`
+			if (!dateObj) return ""
+			const d = dateObj.toDate() // Dayjs -> Date
+			const year = d.getFullYear()
+			const month = String(d.getMonth() + 1).padStart(2, "0")
+			const day = String(d.getDate()).padStart(2, "0")
+			return `${year}-${month}-${day}`
 		}
-	  
+
 		const processedValues: SalesProductForm = {
-		  ...values,
-		  phone: formatPhoneReverse(values.phone),
-		  due_date: formatDate(values.due_date),
-		  paid_amount: values.paid_amount ?? 0,
-		  products: processedProducts
+			...values,
+			phone: formatPhoneReverse(values.phone),
+			due_date: formatDate(values.due_date),
+			paid_amount: values.paid_amount ?? 0,
+			products: processedProducts
 		}
-	  
+
 		await addSalesProduct(processedValues, { onSuccess: () => form.resetFields() })
-	  }
-	  
+	}
+
 	const calculateArea = (productId: number, length?: number) => {
 		const productInfo = getProductInfo(productId)
 
@@ -274,6 +272,20 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 		const printCost = form.getFieldValue(["products", index, "print_cost"]) ?? 0
 		return (materialCost + printCost).toFixed(2)
 	}
+
+	const calculateProductTotal = (product: any) => {
+		if (!product) return 0
+		const printCost = parseFloat(product.print_cost || 0)
+		const materialCost = parseFloat(product.material_cost || 0)
+		return printCost + materialCost
+	}
+
+	const grandTotal = useMemo(() => {
+		return productsList.reduce((sum: number, product: any) => {
+			return sum + calculateProductTotal(product)
+		}, 0)
+	}, [productsList])
+
 	// Опции для селекта продуктов
 	const productOptions =
 		products?.data?.map((item) => ({
@@ -298,9 +310,10 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 							<AutoComplete
 								showSearch={true}
 								notFoundContent={null}
-								placeholder={SELECT_PLACEHOLDER}
+								placeholder={t("select_placeholder")}
 								onSelect={(value) => handleClientSelect(value)}
 								options={clients?.data?.map((item) => ({
+									key: item.id,
 									value: item.full_name,
 									label: item.full_name
 								}))}
@@ -349,7 +362,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 												name={[name, "product_id"]}
 												rules={[{ required: true, message: "Выберите товар" }]}>
 												<Select
-													placeholder={SELECT_PLACEHOLDER}
+													placeholder={t("select_placeholder")}
 													showSearch={true}
 													style={{ width: "220px" }}
 													onChange={(value) => {
@@ -367,7 +380,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 													{...restField}
 													label={"Штук материал"}
 													name={[name, "pieces"]}
-													rules={[{ required: true, message: t("Введите количество штук") }]}
+													rules={[{ required: true, message: "Введите количество штук" }]}
 												>
 													<InputPrice
 														min={0}
@@ -431,7 +444,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 														{ required: true, message: "Введите принт тип" }
 													]}>
 													<Select
-														placeholder={SELECT_PLACEHOLDER}
+														placeholder={t("select_placeholder")}
 														optionFilterProp={"label"}
 														style={{ width: 120 }}
 														onChange={(value) =>
@@ -498,7 +511,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 											<Col span={3}>
 												<Text strong style={{ display: "block" }}>
 													{productInfo.measurementUnitId === 3
-														? "1 шт"
+														? t("pricePerPiece")
 														: productInfo.measurementUnitId === 2
 															? t("pricePerMeter")
 															: t("pricePerMeter")}
@@ -513,14 +526,14 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 													{productInfo.hasWidth
 														? t("area")
 														: productInfo.measurementUnitId === 3
-															? "Штук"
+															? t("pieces")
 															: t("length")}
 													:
 												</Text>
 
 												<Text strong style={{ display: "block" }}>
 													{productInfo.measurementUnitId === 3
-														? (currentProduct?.pieces || 0) // показываем количество штук
+														? (currentProduct?.pieces || 0)
 														: area.toFixed(2)}{" "}
 													{productInfo.unitOfMeasurement}
 												</Text>
@@ -570,7 +583,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 						<Col span={12}>
 							<Form.Item
 								name="due_date"
-								label={t("date")}
+								label={t("due_date")}
 								rules={[{ required: true, message: "Выберите дату" }]}
 							>
 								<DatePicker style={{ width: "100%" }} />
@@ -583,11 +596,30 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 									label={t("paid_amount")}
 									rules={[{ required: true, message: "Введите сумму оплаты" }]}
 								>
-									<InputNumber min={0} style={{ width: "100%" }} />
+									<InputPrice
+										precision={3}
+										step={0.1}
+										placeholder={t("input_placeholder")}
+									/>
 								</Form.Item>
 							</Col>
 						)}
 					</Row>
+				)}
+
+				{grandTotal > 0 && (
+					<div
+						style={{
+							marginTop: "24px",
+							padding: "16px",
+							backgroundColor: "transparent",
+							borderRadius: "6px",
+							textAlign: "right"
+						}}>
+						<Text strong style={{ fontSize: "20px", color: "blue" }}>
+							{t("total_cost")}: {grandTotal.toLocaleString()} UZS
+						</Text>
+					</div>
 				)}
 
 

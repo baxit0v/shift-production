@@ -27,7 +27,7 @@
         "settings_payment_types": "Тўлов турлари",
         "settings_expense_types": "Харажат турлари",
         "cash_flow": "Касcа ҳисоби",
-        "profit_lost": "Foyda/zarar"
+        "profit_lost": "Фойда/зарар"
     },
     "total_area": "Умумий майдон",
     "total_length": "Умумий узунлик",
@@ -94,9 +94,25 @@
     "end_remainder_amount": "Якунги қолдиқ сумма",
     "unitOfMeasurement": "Ўлчов бирлиги",
     "pricePerMeter": "Метрининг нархи",
+    "pricePerPiece": "Дона нархи",
     "area": "Майдон",
-    "due-date": "Тўлов муддати",
+    "due_date": "Тўлов муддати",
+    "paid_amount": "Тўланган сумма",
+    "total_amount": "Умумий суммаси",
+    "total_paid_amount": "Жами тўланган сумма",
+    "owed_amount": "Қарз суммаси",
+    "transactions": "Транзаксиялар",
+    "sell_price": "Сотиш нархи",
+    "back": "Орқага",
+    "remainder_pieces": "Қолган доналар",
+    "pieces": "Дона",
+    "due_date_updated": "Тўлов муддати янгиланди",
+    "update_failed": "Янгиланишда хатолик юз берди",
     "maxValue": "Энг кўпи",
     "printPrice": "Принт нархи",
-    "totalPrice": "Жами нархи"
+    "totalPrice": "Жами нархи",
+    "input_placeholder": "Киритинг, илтимос",
+    "select_placeholder": "Танланг, илтимос",
+    "success": "Муваффақият",
+    "error": "Хатолик"
 }

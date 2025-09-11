@@ -1,6 +1,6 @@
 import { Button, Col, Form, FormInstance, InputNumber, Row } from "antd"
 import { type FC } from "react"
-import { INPUT_PLACEHOLDER } from "src/constants/form.constants"
+import { useTranslation } from "react-i18next"
 // import { useConvertPrice } from "src/hooks/use-convert-price"
 import type { ProductForm } from "src/services/products"
 import { formatInputPrice } from "src/utils/formatter.utils"
@@ -52,6 +52,7 @@ const FormItemPrice: FC<FormItemPriceProps> = ({ form }) => {
 	// 		price_usd: convertedPriceUZStoUSD
 	// 	})
 	// }, [priceUSD, priceUZS, form])
+	const { t } = useTranslation()
 	const increaseByPercent = (field: keyof ProductForm, percent: number) => {
 		const current = form.getFieldValue(field) || 0
 		const updated = current + (current * percent) / 100
@@ -68,7 +69,7 @@ const FormItemPrice: FC<FormItemPriceProps> = ({ form }) => {
 					<InputNumber
 						formatter={formatInputPrice}
 						style={{ width: "100%" }}
-						placeholder={INPUT_PLACEHOLDER}
+						placeholder={t("input_placeholder")}
 					/>
 				</Form.Item>
 				<Row gutter={[8, 8]} style={{ width: "100%" }}>
@@ -100,7 +101,7 @@ const FormItemPrice: FC<FormItemPriceProps> = ({ form }) => {
 					<InputNumber
 						formatter={formatInputPrice}
 						style={{ width: "100%" }}
-						placeholder={INPUT_PLACEHOLDER}
+						placeholder={t("input_placeholder")}
 					/>
 				</Form.Item>
 				<Row gutter={[8, 8]} style={{ width: "100%" }}>

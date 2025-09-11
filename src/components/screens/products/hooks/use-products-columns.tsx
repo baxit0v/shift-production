@@ -39,7 +39,7 @@ export const useProductsColumns = () => {
 			)
 		},
 		{
-			title: "Цена продажи",
+			title: t("sell_price"),
 			dataIndex: "sell_price",
 			key: "sell_price",
 			render: (_v, record) => (

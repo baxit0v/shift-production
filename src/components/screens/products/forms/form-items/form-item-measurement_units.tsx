@@ -2,7 +2,6 @@ import { Form, Select } from "antd"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
 import { ProductForm } from "src/services/products"
-import { SELECT_PLACEHOLDER } from "src/constants/form.constants"
 import { useGetMeasurementUnitsQuery } from "src/services/shared/measurement-units"
 
 const FormItemMeasurementUnits: FC = () => { 
@@ -21,7 +20,7 @@ const FormItemMeasurementUnits: FC = () => {
             label={t("measurement_unit")}
             rules={[{ required: true }]}>
             <Select
-                placeholder={SELECT_PLACEHOLDER}
+                placeholder={t("select_placeholder")}
                 loading={isLoading || isFetching}
                 showSearch={true}
                 optionFilterProp={"label"}

@@ -94,10 +94,25 @@
     "end_remainder_amount": "Конечная сумма остатка",
     "unitOfMeasurement": "Ед.измерение",
     "pricePerMeter": "Цена за метр",
+    "pricePerPiece": "Цена за штуку",
     "area": "Площадь",
-    "due-date": "Срок оплаты",
-
+    "due_date": "Срок оплаты",
+    "paid_amount": "Оплаченная сумма",
+    "total_amount": "Общая сумма",
+    "total_paid_amount": "Общая оплаченная сумма",
+    "owed_amount": "Задолженность",
+    "transactions": "Транзакции",
+    "sell_price": "Цена продажи",
+    "back": "Назад",
+    "remainder_pieces": "Остаток штук",
+    "pieces": "Штук",
+    "due_date_updated": "Срок оплаты успешно обновлен",
+    "update_failed": "Ошибка при обновлении",
     "maxValue": "Максимальная",
     "printPrice": "Цена принта",
-    "totalPrice": "Общая цена"
+    "totalPrice": "Общая цена",
+    "input_placeholder": "Введите, пожалуйста",
+    "select_placeholder": "Выберите, пожалуйста",
+    "success": "Успешно",
+    "error": "Ошибка"
 }

@@ -7,6 +7,11 @@ class DebtorsService {
 		const response = await api.get(`/debtors`, { params })
 		return response.data
 	}
+
+	patchDueDate = async (id: number, due_date: string | null): Promise<Debtor> => {
+		const response = await api.patch(`/debtors/${id}`, { due_date })
+		return response.data
+	}
 }
 
 export const debtorsService = new DebtorsService()
