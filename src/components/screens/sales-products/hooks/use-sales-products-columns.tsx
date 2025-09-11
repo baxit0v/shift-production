@@ -9,14 +9,14 @@ import {
 	useDeleteSalesProductsMutation
 } from "src/services/sales-products"
 
+import { useTranslation } from "react-i18next"
+import { useGetProfileQuery } from "src/services/login"
 import {
 	formatDate,
 	formatEmpty,
 	formatPriceUZS
 } from "src/utils/formatter.utils"
 import { SalesProductsTableList } from "../tables/sales-products-table-list"
-import { useTranslation } from "react-i18next"
-import { useGetProfileQuery } from "src/services/login"
 
 export const useSalesProductsColumns = () => {
 	const { mutate: deleteSalesProduct } = useDeleteSalesProductsMutation()
