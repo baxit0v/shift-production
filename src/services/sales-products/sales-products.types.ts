@@ -10,7 +10,7 @@ type SalesProduct = {
 	client: Client
 	products: SalesProductsItems
 	created_at: string
-	updated_at: string
+	updated_at?: string
 }
 
 export type SalesProductsItems = {
