@@ -17,6 +17,7 @@ import {
 	formatPriceUZS
 } from "src/utils/formatter.utils"
 import { SalesProductsTableList } from "../tables/sales-products-table-list"
+import { UseSalesProductsTablePrint } from "./use-sales-products-table-print"
 
 export const useSalesProductsColumns = () => {
 	const { mutate: deleteSalesProduct } = useDeleteSalesProductsMutation()
@@ -69,6 +70,11 @@ export const useSalesProductsColumns = () => {
 			dataIndex: "created_at",
 			key: "created_at",
 			render: formateHHDate
+		},
+		{
+			title: t("receipt"),
+			key: "print",
+			render: (_, record) => <UseSalesProductsTablePrint record={record} />
 		},
 		{
 			width: 100,

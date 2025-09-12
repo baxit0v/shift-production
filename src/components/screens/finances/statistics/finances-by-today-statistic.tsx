@@ -33,7 +33,7 @@ const FinancesByTodayStatistic: FC<FinancesByTodayStatisticProps> = ({
 	url,
 	onlyUZS
 }) => {
-	const {t }= useTranslation()
+	const { t } = useTranslation()
 	const [priceType, setPriceType] = useState<FinancePriceType>("uzs")
 
 	const { data: financesByToday, isLoading } = useGetFinancesByTodayQuery(url, {
@@ -71,7 +71,7 @@ const FinancesByTodayStatistic: FC<FinancesByTodayStatisticProps> = ({
 			)
 		},
 		{
-			title:t("total_count"),
+			title: t("total_count"),
 			Icon: ShoppingCartOutlined,
 			value: isLoading ? (
 				<Skeleton.Input style={{ height: 20 }} />

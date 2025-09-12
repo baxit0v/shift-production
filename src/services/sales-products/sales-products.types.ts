@@ -8,7 +8,7 @@ type SalesProduct = {
 	total_meter: number
 	payment_type: PaymentType
 	client: Client
-	products: SalesProductsItems
+	products: SalesProductsItems[]
 	created_at: string
 	updated_at?: string
 }
@@ -22,11 +22,15 @@ export type SalesProductsItems = {
 	print_type: {
 		id: number
 		name: string
+		amount: string
 	}
 	print_cost: string
 	material_cost: string
 	amount: string
 	meter_square: number
+	length: number
+	pieces: number
+	print_meter_square: number
 	meter: number
 	file: null
 }
