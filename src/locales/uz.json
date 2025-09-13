@@ -109,6 +109,8 @@
     "pieces": "Дона",
     "due_date_updated": "Тўлов муддати янгиланди",
     "update_failed": "Янгиланишда хатолик юз берди",
+    "payment_added": "Тўлов киритилди",
+    "create_failed": "Яратиш амалга ошмади",
     "maxValue": "Энг кўпи",
     "printPrice": "Принт нархи",
     "totalPrice": "Жами нархи",

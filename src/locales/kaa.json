@@ -109,6 +109,8 @@
     "pieces": "Дана",
     "due_date_updated": "Мүддети жаңаланды", 
     "update_failed": "Жаңалаўда қәтелик жуз берди",
+    "payment_added": "Төлем қосылды",
+    "create_failed": "Жаратыў иске асырылмады",
     "maxValue": "Максимал",
     "printPrice": "Принт баҳасы",
     "totalPrice": "Улыўма баҳа",

@@ -109,6 +109,8 @@
     "pieces": "Pieces",
     "due_date_updated": "Due date successfully updated",
     "update_failed": "Update failed",
+    "payment_added": "Payment added",
+    "create_failed": "Create failed",
     "maxValue": "Maximum",
     "printPrice": "Print price",
     "totalPrice": "Total price",

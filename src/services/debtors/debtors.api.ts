@@ -3,6 +3,7 @@ import { useMessage } from "src/hooks/use-message"
 import type { GetParams, ResponseError } from "src/services/shared"
 import { debtorsService } from "./debtors.service"
 import { useTranslation } from "react-i18next"
+import { DebtorForm } from "./debtors.types"
 
 const useGetDebtorsQuery = (params: GetParams) => {
 	const { message } = useMessage()
@@ -20,6 +21,28 @@ const useGetDebtorsQuery = (params: GetParams) => {
 	})
 }
 
+const useCreateDebtorMutation = () => {
+	const queryClient = useQueryClient()
+	const { message } = useMessage()
+	const { t } = useTranslation()
+
+	return useMutation({
+		mutationFn: (data: DebtorForm) => debtorsService.create(data),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["debtors"] })
+			message.success({
+				message: t("success"),
+				description: t("payment_added"),
+			})
+		},
+		onError: (error: ResponseError) => {
+			message.error({
+				message: t("error"),
+				description: error?.response?.data?.message || t("create_failed"),
+			})
+		},
+	})
+}
 
 const useUpdateDueDateMutation = () => {
 	const queryClient = useQueryClient()
@@ -45,4 +68,4 @@ const useUpdateDueDateMutation = () => {
 	})
 }
 
-export { useGetDebtorsQuery, useUpdateDueDateMutation }
+export { useGetDebtorsQuery, useCreateDebtorMutation, useUpdateDueDateMutation }

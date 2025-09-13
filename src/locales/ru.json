@@ -109,6 +109,8 @@
     "pieces": "Штук",
     "due_date_updated": "Срок оплаты успешно обновлен",
     "update_failed": "Ошибка при обновлении",
+    "payment_added": "Платеж добавлен",
+    "create_failed": "Не удалось создать",
     "maxValue": "Максимальная",
     "printPrice": "Цена принта",
     "totalPrice": "Общая цена",

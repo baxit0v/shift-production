@@ -20,5 +20,10 @@ type Debtor = {
     transaction: Transaction[]
 }
 
+type DebtorForm = {
+    sell_id: string
+    paid_amount: string
+    client_id: string
+}
 
-export type { Debtor }
+export type { Debtor, DebtorForm }

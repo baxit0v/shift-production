@@ -1,9 +1,10 @@
-import { QuestionCircleOutlined } from "@ant-design/icons"
-import { Popover, Space } from "antd"
+import { PlusOutlined, QuestionCircleOutlined } from "@ant-design/icons"
+import { Button, Popover, Space } from "antd"
 import { ColumnsType } from "antd/es/table"
 import { useTranslation } from "react-i18next"
 import { ClientTable } from "src/components/shared/client"
 import type { SalesProduct } from "src/services/sales-products"
+import { useFormDevtoolsStore } from "src/store/use-form-devtools-store"
 import {
 	formateHHDate,
 	formatEmpty,
@@ -15,6 +16,7 @@ import { UseDebtorsColumnDueDatePicker } from "./use-debtors-column-due-date-pic
 
 export const useDebtorsColumns = () => {
 	const { t } = useTranslation()
+	const { setParams } = useFormDevtoolsStore()
 
 	const columns: ColumnsType<any> = [
 		{
@@ -99,7 +101,21 @@ export const useDebtorsColumns = () => {
 			dataIndex: "created_at",
 			key: "created_at",
 			render: formateHHDate
-		}
+		},
+		{
+			width: 100,
+			fixed: "right",
+			title: "",
+			key: "actions",
+			render: (_, record) => (
+				<Button
+					type="primary"
+					icon={<PlusOutlined />}
+					onClick={() => setParams(record)}
+				/>
+			),
+		},
+
 	]
 	return columns
 }
