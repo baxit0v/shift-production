@@ -124,35 +124,37 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 
 	const onFinish: FormProps<any>["onFinish"] = async (values) => {
 		const processedProducts =
-			values.products?.map((product: { [x: string]: any; product_id?: any; print_type_id?: any; print_meter_square?: any; print_cost?: any }) => {
-				const productInfo = getProductInfo(product.product_id)
-				if (!productInfo.hasWidth) {
-					const { print_type_id, print_meter_square, print_cost, ...rest } = product
-					return rest
-				}
-				return product
-			}) || []
-
-		// преобразование даты в YYYY-MM-DD
+		  values.products?.map((product: any) => {
+			const productInfo = getProductInfo(product.product_id)
+			if (!productInfo.hasWidth) {
+			  const { print_type_id, print_meter_square, print_cost, ...rest } = product
+			  return rest
+			}
+			return product
+		  }) || []
+	  
 		const formatDate = (dateObj: any) => {
-			if (!dateObj) return ""
-			const d = dateObj.toDate() // Dayjs -> Date
-			const year = d.getFullYear()
-			const month = String(d.getMonth() + 1).padStart(2, "0")
-			const day = String(d.getDate()).padStart(2, "0")
-			return `${year}-${month}-${day}`
+		  if (!dateObj) return undefined
+		  const d = dateObj.toDate()
+		  const year = d.getFullYear()
+		  const month = String(d.getMonth() + 1).padStart(2, "0")
+		  const day = String(d.getDate()).padStart(2, "0")
+		  return `${year}-${month}-${day}`
 		}
-
+	  
 		const processedValues: SalesProductForm = {
-			...values,
-			phone: formatPhoneReverse(values.phone),
-			due_date: formatDate(values.due_date),
-			paid_amount: values.paid_amount ?? 0,
-			products: processedProducts
+		  ...values,
+		  phone: formatPhoneReverse(values.phone),
+		  products: processedProducts,
+		  paid_amount: values.paid_amount ?? 0,
+		  ...(values.payment_type_id === 2 || values.payment_type_id === 4
+			? { due_date: formatDate(values.due_date) }
+			: {}), // ← добавляем только если нужно
 		}
-
+	  
 		await addSalesProduct(processedValues, { onSuccess: () => form.resetFields() })
-	}
+	  }
+	  
 
 	const calculateArea = (productId: number, length?: number) => {
 		const productInfo = getProductInfo(productId)

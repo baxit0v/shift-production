@@ -6,6 +6,8 @@ import { useReactToPrint } from "react-to-print"
 import { SalesProduct } from "src/services/sales-products"
 import { formatPhone, formatPriceUZS } from "src/utils/formatter.utils"
 
+import logo from "/logo.png"
+
 type Props = {
   record: SalesProduct
 }
@@ -22,7 +24,10 @@ export const UseSalesProductsTablePrint = ({ record }: Props) => {
     <div>
       <div ref={componentRef} className="print-area">
         <div className="receipt">
-          <p className="company-title">SHIFT</p>
+          <div className="logo-title">
+            <img className="logo" src={logo} alt="logo" />
+            <p className="company-title">SHIFT</p>
+          </div>
           <div className="top">
             <h1 className="title">{t("receipt")} #{record.id}</h1>
             <div className="between">
@@ -136,8 +141,19 @@ export const UseSalesProductsTablePrint = ({ record }: Props) => {
               padding: 5px;
             }
           }
+          .logo-title {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+          }
+          .logo {
+            width: 20px;
+            heigth: 20px;
+            border-radius: 50%;
+          }
           .company-title {
-            text-align: center;
+            margin-top: 12px;
             font-weight: bold;
           }
           .top .title {
