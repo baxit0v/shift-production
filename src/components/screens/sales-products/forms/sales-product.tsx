@@ -227,20 +227,26 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 	}
 	const handleChangeQuantity = (index: number, productId: number) => {
 		const product = getProductInfo(productId)
-		const quantity =
-			form.getFieldValue(["products", index, "length"]) ??
-			form.getFieldValue(["products", index, "pieces"]) ??
-			0
-
-		if (!quantity) {
-			form.setFieldValue(["products", index, "material_cost"], 0)
-			return
+		const length = form.getFieldValue(["products", index, "length"]) ?? 0
+		const pieces = form.getFieldValue(["products", index, "pieces"]) ?? 0
+	
+		let materialCost = 0
+	
+		if (product.measurementUnitId === 3) {
+			// Штуки
+			materialCost = product.sellPrice * pieces
+		} else if (product.measurementUnitId === 1) {
+			// Метр квадратный → учитываем площадь
+			const area = calculateArea(productId, length)
+			materialCost = product.sellPrice * area
+		} else {
+			// Метр
+			materialCost = product.sellPrice * length
 		}
-
-		// если метры или штуки → умножаем напрямую
-		const materialCost = product.sellPrice * quantity
+	
 		form.setFieldValue(["products", index, "material_cost"], materialCost)
 	}
+	
 
 
 	/* const handleChangeLength = (index: number, productId: number) => {
