@@ -1,5 +1,6 @@
 import type { Client } from "src/services/shared/clients"
 import type { PaymentType } from "src/services/shared/payment-types"
+import { MeasurementUnits } from "../shared/measurement-units"
 
 type SalesProduct = {
 	id: number
@@ -18,6 +19,7 @@ export type SalesProductsItems = {
 	product: {
 		id: number
 		name: string
+		measurement_unit: MeasurementUnits
 	}
 	print_type: {
 		id: number

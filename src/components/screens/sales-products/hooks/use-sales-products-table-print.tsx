@@ -26,10 +26,8 @@ export const UseSalesProductsTablePrint = ({ record }: Props) => {
         <div className="receipt">
           <div className="logo-title">
             <img className="logo" src={logo} alt="logo" />
-            <p className="company-title">SHIFT</p>
           </div>
           <div className="top">
-            <h1 className="title">{t("receipt")} #{record.id}</h1>
             <div className="between">
               <p><b>{t("client")}:</b></p>
               <p><b>{record.client.full_name}</b></p>
@@ -53,52 +51,34 @@ export const UseSalesProductsTablePrint = ({ record }: Props) => {
           {Array.isArray(record.products) &&
             record.products.map((item) => (
               <div key={item.id} className="product">
+                {item.product.measurement_unit.id === 1 && (
+                  <div className="between">
+                    <p>{t("product")}:</p>
+                    <p>{item.product.name} x {item.length} м = {item.meter_square} м²</p>
+                  </div>
+                )}
+                {item.product.measurement_unit.id === 2 && (
+                  <div className="between">
+                    <p>{t("product")}:</p>
+                    <p>{item.product.name} x {item.length} м</p>
+                  </div>
+                )}
+                {item.product.measurement_unit.id === 3 && (
+                  <div className="between">
+                    <p>{t("product")}:</p>
+                    <p>{item.product.name} x {item.pieces} {t("pieces")}</p>
+                  </div>
+                )}
+                {Number(item.print_meter_square) > 0 && item.print_type && (
+                  <div className="between">
+                    <p>{item.print_type.name} x {item.print_meter_square} м²</p>
+                    <p>{formatPriceUZS(item.print_type.amount)}</p>
+                  </div>
+                )}
                 <div className="between">
-                  <p>{t("product")}</p>
-                  <p>{item.product.name}</p>
+                  <p>{t("material_cost")}</p>
+                  <p>{formatPriceUZS(item.material_cost)}</p>
                 </div>
-                {Number(item.length) > 0 && (
-                  <div className="between">
-                    <p>{t("length")}</p>
-                    <p>{item.length}</p>
-                  </div>
-                )}
-                {Number(item.pieces) > 0 && (
-                  <div className="between">
-                    <p>{t("pieces")}</p>
-                    <p>{item.pieces}</p>
-                  </div>
-                )}
-                {Number(item.meter_square) > 0 && (
-                  <div className="between">
-                    <p>{t("meter_square")}</p>
-                    <p>{item.meter_square}</p>
-                  </div>
-                )}
-                {Number(item.print_meter_square) > 0 && (
-                  <div className="between">
-                    <p>{t("print_meter_square")}</p>
-                    <p>{item.print_meter_square}</p>
-                  </div>
-                )}
-                {item.print_type && (
-                  <div className="between">
-                    <p>{item.print_type.name}</p>
-                    <p>({formatPriceUZS(item.print_type.amount)})</p>
-                  </div>
-                )}
-                {Number(item.print_cost) > 0 && (
-                  <div className="between">
-                    <p>{t("print_cost")}</p>
-                    <p>{formatPriceUZS(item.print_cost)}</p>
-                  </div>
-                )}
-                {Number(item.material_cost) > 0 && (
-                  <div className="between">
-                    <p>{t("material_cost")}</p>
-                    <p>{formatPriceUZS(item.material_cost)}</p>
-                  </div>
-                )}
                 {Number(item.amount) > 0 && (
                   <div className="between">
                     <p>{t("total_amount")}</p>
@@ -142,24 +122,17 @@ export const UseSalesProductsTablePrint = ({ record }: Props) => {
             }
           }
           .logo-title {
+            margin-top: 30px;
+            margin-bottom: 50px;
             display: flex;
             gap: 5px;
             justify-content: center;
             align-items: center;
           }
           .logo {
-            width: 20px;
-            heigth: 20px;
+            width: 80px;
+            heigth: 80px;
             border-radius: 50%;
-          }
-          .company-title {
-            margin-top: 12px;
-            font-weight: bold;
-          }
-          .top .title {
-            text-align: center;
-            font-weight: bold;
-            margin: 5px 0 20px;
           }
           .between {
             display: flex;
