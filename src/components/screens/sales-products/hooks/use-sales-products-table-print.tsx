@@ -72,7 +72,7 @@ export const UseSalesProductsTablePrint = ({ record }: Props) => {
                 {Number(item.print_meter_square) > 0 && item.print_type && (
                   <div className="between">
                     <p>{item.print_type.name} x {item.print_meter_square} м²</p>
-                    <p>{formatPriceUZS(item.print_type.amount)}</p>
+                    <p>{formatPriceUZS(item.print_cost)}</p>
                   </div>
                 )}
                 <div className="between">
