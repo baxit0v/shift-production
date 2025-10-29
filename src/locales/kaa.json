@@ -122,5 +122,6 @@
     "error": "Қәтелик",
     "print": "Басып шығарыў",
     "receipt": "Чек",
-    "print_meter_square": "Баспа метр квадраты"
+    "print_meter_square": "Баспа метр квадраты",
+    "no_debtors": "Бүгинге қарыздар жоқ"
 }

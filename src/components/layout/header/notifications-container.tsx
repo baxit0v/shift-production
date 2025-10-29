@@ -40,7 +40,7 @@ const DebtorsNotificationContainer: FC<Props> = ({ children, count, debtors }) =
                     <List
                         size="small"
                         dataSource={debtors}
-                        locale={{ emptyText: "Нет должников на сегодня" }}
+                        locale={{ emptyText: t("no_debtors") }}
                         renderItem={(item) => (
                             <List.Item
                                 key={item.id}

@@ -122,5 +122,6 @@
     "error": "Error",
     "print": "Print",
     "receipt": "Receipt",
-    "print_meter_square": "Print meter square"
+    "print_meter_square": "Print meter square",
+    "no_debtors": "No debtors for today"
 }

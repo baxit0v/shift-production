@@ -124,37 +124,37 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 
 	const onFinish: FormProps<any>["onFinish"] = async (values) => {
 		const processedProducts =
-		  values.products?.map((product: any) => {
-			const productInfo = getProductInfo(product.product_id)
-			if (!productInfo.hasWidth) {
-			  const { print_type_id, print_meter_square, print_cost, ...rest } = product
-			  return rest
-			}
-			return product
-		  }) || []
-	  
+			values.products?.map((product: any) => {
+				const productInfo = getProductInfo(product.product_id)
+				if (!productInfo.hasWidth) {
+					const { print_type_id, print_meter_square, print_cost, ...rest } = product
+					return rest
+				}
+				return product
+			}) || []
+
 		const formatDate = (dateObj: any) => {
-		  if (!dateObj) return undefined
-		  const d = dateObj.toDate()
-		  const year = d.getFullYear()
-		  const month = String(d.getMonth() + 1).padStart(2, "0")
-		  const day = String(d.getDate()).padStart(2, "0")
-		  return `${year}-${month}-${day}`
+			if (!dateObj) return undefined
+			const d = dateObj.toDate()
+			const year = d.getFullYear()
+			const month = String(d.getMonth() + 1).padStart(2, "0")
+			const day = String(d.getDate()).padStart(2, "0")
+			return `${year}-${month}-${day}`
 		}
-	  
+
 		const processedValues: SalesProductForm = {
-		  ...values,
-		  phone: formatPhoneReverse(values.phone),
-		  products: processedProducts,
-		  paid_amount: values.paid_amount ?? 0,
-		  ...(values.payment_type_id === 2 || values.payment_type_id === 4
-			? { due_date: formatDate(values.due_date) }
-			: {}), // ← добавляем только если нужно
+			...values,
+			phone: formatPhoneReverse(values.phone),
+			products: processedProducts,
+			paid_amount: values.paid_amount ?? 0,
+			...(values.payment_type_id === 2 || values.payment_type_id === 4
+				? { due_date: formatDate(values.due_date) }
+				: {}), // ← добавляем только если нужно
 		}
-	  
+
 		await addSalesProduct(processedValues, { onSuccess: () => form.resetFields() })
-	  }
-	  
+	}
+
 
 	const calculateArea = (productId: number, length?: number) => {
 		const productInfo = getProductInfo(productId)
@@ -229,9 +229,9 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 		const product = getProductInfo(productId)
 		const length = form.getFieldValue(["products", index, "length"]) ?? 0
 		const pieces = form.getFieldValue(["products", index, "pieces"]) ?? 0
-	
+
 		let materialCost = 0
-	
+
 		if (product.measurementUnitId === 3) {
 			// Штуки
 			materialCost = product.sellPrice * pieces
@@ -243,10 +243,10 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 			// Метр
 			materialCost = product.sellPrice * length
 		}
-	
+
 		form.setFieldValue(["products", index, "material_cost"], materialCost)
 	}
-	
+
 
 
 	/* const handleChangeLength = (index: number, productId: number) => {
@@ -417,21 +417,26 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 											{productInfo.hasWidth && (
 												<Form.Item
 													{...restField}
-													label={`${t("meter_square")}(м2)`}
+													label={`${t("meter_square")}(м²)`}
 													name={[name, "print_meter_square"]}
 													rules={[
 														{ required: true, message: "Введите площадь" },
 														{
 															validator: (_, value) => {
-																if (value && value > area) {
+																// округляем оба значения до 2 знаков
+																const roundedArea = Number(area?.toFixed(2) || 0)
+																const roundedValue = Number((value ?? 0).toFixed(2))
+
+																if (roundedValue > roundedArea) {
 																	return Promise.reject(
-																		new Error(`Максимум ${area}`)
+																		new Error(`Максимум ${roundedArea}`)
 																	)
 																}
 																return Promise.resolve()
 															}
 														}
-													]}>
+													]}
+												>
 													<InputPrice
 														onChange={(value) =>
 															handleChangeMeterSquare(name, value as number)
@@ -441,6 +446,7 @@ export const SalesProduct: FC<Props> = ({ className = `` }) => {
 													/>
 												</Form.Item>
 											)}
+
 
 											{/* Тип печати (только для продуктов с шириной) */}
 											{productInfo.hasWidth && (
