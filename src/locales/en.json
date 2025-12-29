@@ -42,6 +42,8 @@
     "name": "Name",
     "expense_type": "Expense type",
     "amount": "Amount",
+    "expense_date": "Expense date",
+    "description": "Description",
     "cashier": "Cashier",
     "password": "Password",
     "phone_number": "Phone number",
@@ -123,5 +125,26 @@
     "print": "Print",
     "receipt": "Receipt",
     "print_meter_square": "Print meter square",
-    "no_debtors": "No debtors for today"
+    "no_debtors": "No debtors for today",
+    "category": "Category",
+    "cashflow": {
+        "start": "Initial Balance",
+        "income": "Income (Sales)",
+        "purchase": "Purchase (Buying)",
+        "end": "Final Balance"
+    },
+    "months": {
+        "jan": "Jan",
+        "feb": "Feb",
+        "mar": "Mar",
+        "apr": "Apr",
+        "may": "May",
+        "jun": "Jun",
+        "jul": "Jul",
+        "aug": "Aug",
+        "sep": "Sep",
+        "oct": "Oct",
+        "nov": "Nov",
+        "dec": "Dec"
+    }
 }

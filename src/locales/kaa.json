@@ -42,6 +42,8 @@
     "name": "Аты",
     "expense_type": "Қәрежет түри",
     "amount": "Сумма",
+    "expense_date": "Қәрежет сәнеси",
+    "description": "Түсиндирме",
     "cashier": "Кассир",
     "password": "Пароль",
     "phone_number": "Телефон номер",
@@ -102,14 +104,14 @@
     "paid_amount": "Төленген сумма",
     "total_amount": "Улыўма сумма",
     "total_paid_amount": "Жәми төленген сумма",
-    "owed_amount": "Қарыз суммасы",
+    "owed_amount": "Қарыз суммаси",
     "transactions": "Транзакциялар",
     "sell_price": "Сатыў баҳасы",
     "back": "Артқа",
     "close": "Жабыў",
     "remainder_pieces": "Қалған дана",
     "pieces": "Дана",
-    "due_date_updated": "Мүддети жаңаланды", 
+    "due_date_updated": "Мүддети жаңаланды",
     "update_failed": "Жаңалаўда қәтелик жуз берди",
     "payment_added": "Төлем қосылды",
     "create_failed": "Жаратыў иске асырылмады",
@@ -123,5 +125,26 @@
     "print": "Басып шығарыў",
     "receipt": "Чек",
     "print_meter_square": "Баспа метр квадраты",
-    "no_debtors": "Бүгинге қарыздар жоқ"
+    "no_debtors": "Бүгинге қарыздар жоқ",
+    "category": "Категория",
+    "cashflow": {
+        "start": "Дәслепки қалдық",
+        "income": "Дәрамад (сатыў)",
+        "purchase": "Шығыс (харид)",
+        "end": "Ақырғы қалдық"
+    },
+    "months": {
+        "jan": "Янв",
+        "feb": "Фев",
+        "mar": "Мар",
+        "apr": "Апр",
+        "may": "Май",
+        "jun": "Июн",
+        "jul": "Июл",
+        "aug": "Авг",
+        "sep": "Сен",
+        "oct": "Окт",
+        "nov": "Ноя",
+        "dec": "Дек"
+    }
 }

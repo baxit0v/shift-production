@@ -1,4 +1,3 @@
-
 import { api } from "src/api"
 import { Expense } from "../expenses"
 import { Response } from "../shared"
@@ -7,6 +6,7 @@ export type CashFlow = {
 	month: number
 	start_remainder_amount: string
 	sell_amount: string
+	purchase_amount: string
 	end_remainder_amount: string
 	expenses: Expense[]
 }
@@ -14,6 +14,7 @@ export type CashFlow = {
 export type ProfitLose = {
 	month: number
 	sell_amount: string
+	purchase_amount: string
 	expenses: Expense[]
 	profit: string
 }
